@@ -1,0 +1,35 @@
+{
+  "name": "cushon-isa",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "postcss": {
+    "plugins": {
+      "tailwindcss": {},
+      "autoprefixer": {}
+    }
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/react": "18.2.58"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.17",
+    "dotenv": "^16.4.1",
+    "next": "latest",
+    "pg": "^8.11.3",
+    "postcss": "^8.4.35",
+    "react": "latest",
+    "react-dom": "latest",
+    "tailwindcss": "^3.4.1"
+  }
+}
