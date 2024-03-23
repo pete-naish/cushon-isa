@@ -1,7 +1,8 @@
 import type { FC } from "react";
 
 import type { Fund } from "../types";
-import { calculateProjectedReturns } from "../utils";
+import { calculateProjectedReturns, stringToNumber } from "../utils";
+import { MIN_LUMP_SUM } from "../config";
 
 interface FundCardProps {
   fund: Fund;
@@ -21,7 +22,7 @@ const FundCard: FC<FundCardProps> = ({
       <h3>{fund.name}</h3>
 
       <button onClick={onSelectFund}>Learn more</button>
-      {lumpSum && (
+      {stringToNumber(lumpSum) > MIN_LUMP_SUM ? (
         <p>
           Projected return:
           {calculateProjectedReturns(
@@ -30,6 +31,8 @@ const FundCard: FC<FundCardProps> = ({
             fund.charges
           )}
         </p>
+      ) : (
+        <p>Enter a value to see how each fund might perform over time</p>
       )}
       <input type="checkbox" checked={selected} onChange={onSelectFund} />
     </div>

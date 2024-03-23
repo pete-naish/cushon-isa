@@ -76,6 +76,17 @@ export default function Page() {
     selectedFunds.length && selectedFunds.length <= MAX_SELECTED_FUNDS
   );
 
+  const fundsMatchingFilters = funds.filter((fund) => {
+    const categoryMatch =
+      !selectedCategories.length || selectedCategories.includes(fund.category);
+
+    const riskProfileMatch =
+      !selectedRiskProfiles.length ||
+      selectedRiskProfiles.includes(fund.riskProfile);
+
+    return categoryMatch && riskProfileMatch;
+  });
+
   return (
     <div>
       <div className="w-full">
@@ -115,17 +126,7 @@ export default function Page() {
         allSelected={!selectedRiskProfiles.length}
       />
       <FundList
-        funds={funds.filter((fund) => {
-          const categoryMatch =
-            !selectedCategories.length ||
-            selectedCategories.includes(fund.category);
-
-          const riskProfileMatch =
-            !selectedRiskProfiles.length ||
-            selectedRiskProfiles.includes(fund.riskProfile);
-
-          return categoryMatch && riskProfileMatch;
-        })}
+        funds={fundsMatchingFilters}
         lumpSum={lumpSum}
         onSelectFund={(fund) => handleSelectFund(fund)}
         isSelected={(fund) =>
