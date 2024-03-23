@@ -9,13 +9,14 @@ export const stringToNumber = (str?: string) => {
 };
 
 export const calculateProjectedReturns = (
-  initialInvestment: number,
+  initialInvestment: string,
   returnRate: number,
   chargesRate: number
 ) => {
+  const initialInvestmentNumber = stringToNumber(initialInvestment);
   const returnRateDecimal = returnRate / 100;
   const chargesRateDecimal = chargesRate / 100;
-  const amountAfterReturn = initialInvestment * (1 + returnRateDecimal);
+  const amountAfterReturn = initialInvestmentNumber * (1 + returnRateDecimal);
   const chargesAmount = amountAfterReturn * chargesRateDecimal;
   const finalAmount = amountAfterReturn - chargesAmount;
 

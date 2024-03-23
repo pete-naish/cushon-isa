@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, type ChangeEvent, useMemo } from "react";
+import React, { useState, type ChangeEvent, useMemo, useCallback } from "react";
 
 import { ANNUAL_ISA_LIMIT, MAX_SELECTED_FUNDS } from "./config";
-import { calculateProjectedReturns, stringToNumber, toggleItem } from "./utils";
+import { stringToNumber } from "./utils";
 import { useLocalStorage } from "./use-local-storage";
 import {
   riskProfiles,
@@ -11,11 +11,15 @@ import {
   type RiskProfile,
   type SelectedFund,
   categories,
+  type Fund,
 } from "./types";
 import { funds } from "./data";
 
+import FilterList from "./components/filter-list";
+import FundList from "./components/fund-list";
+
 export default function Page() {
-  const [lumpSum, setLumpSum] = useState(0);
+  const [lumpSum, setLumpSum] = useState("");
   const [selectedFunds, setSelectedFunds] = useLocalStorage<SelectedFund[]>(
     "selectedFunds",
     []
@@ -25,16 +29,35 @@ export default function Page() {
     RiskProfile[]
   >([]);
 
-  const handleFundTotalChange = (id: string, value: string) => {
-    setSelectedFunds((selectedFunds) => {
-      return selectedFunds.map((selectedFund) => {
-        if (selectedFund.id !== id) return selectedFund;
+  const handleFundTotalChange = useCallback(
+    (id: string, value: string) => {
+      setSelectedFunds((selectedFunds) => {
+        return selectedFunds.map((selectedFund) => {
+          if (selectedFund.id !== id) return selectedFund;
 
-        return {
-          ...selectedFund,
-          total: value,
-        };
+          return {
+            ...selectedFund,
+            total: value,
+          };
+        });
       });
+    },
+    [setSelectedFunds]
+  );
+
+  const handleSelectFund = (fund: Fund) => {
+    setSelectedFunds((selectedFunds) => {
+      if (selectedFunds.find((selectedFund) => selectedFund.id === fund.id)) {
+        return selectedFunds.filter(
+          (selectedFund) => selectedFund.id !== fund.id
+        );
+      }
+
+      if (MAX_SELECTED_FUNDS === 1) return [fund];
+
+      if (selectedFunds.length >= MAX_SELECTED_FUNDS) return selectedFunds;
+
+      return [...selectedFunds, fund];
     });
   };
 
@@ -46,8 +69,8 @@ export default function Page() {
     }, 0);
   }, [selectedFunds]);
 
-  const totalDeposit = selectedFundTotal.toFixed(2);
-  const remainingAllowance = (ANNUAL_ISA_LIMIT - selectedFundTotal).toFixed(2); // TODO format nicely with commas
+  const totalDeposit = selectedFundTotal;
+  const remainingAllowance = ANNUAL_ISA_LIMIT - selectedFundTotal;
 
   const enoughFundsSelected = Boolean(
     selectedFunds.length && selectedFunds.length <= MAX_SELECTED_FUNDS
@@ -62,7 +85,7 @@ export default function Page() {
         />
       </div>
       <h1 className="text-3xl font-bold underline text-primary">
-        Cushon Stocks & Shares ISA
+        Cushon Stocks &amp; Shares ISA
       </h1>
       <h2>
         {MAX_SELECTED_FUNDS === 1
@@ -77,36 +100,22 @@ export default function Page() {
           setLumpSum(e.target.value)
         }
       />
-      <label>Categories</label>
-      <button onClick={() => setSelectedCategories([])}>All</button>
-      {categories.map((category) => {
-        const toggleCategory = toggleItem(category);
-        return (
-          <button
-            key={category}
-            // style if included in selectedCategories
-            onClick={() => setSelectedCategories(toggleCategory)}
-          >
-            {category}
-          </button>
-        );
-      })}
-      <label>Risk appetite</label>
-      <button onClick={() => setSelectedRiskProfiles([])}>All</button>
-      {riskProfiles.map((riskProfile) => {
-        const toggleRiskProfile = toggleItem(riskProfile);
-        return (
-          <button
-            key={riskProfile}
-            // style if included in selectedRiskProfiles
-            onClick={() => setSelectedRiskProfiles(toggleRiskProfile)}
-          >
-            {riskProfile}
-          </button>
-        );
-      })}
-      {funds
-        .filter((fund) => {
+      <FilterList
+        label="Categories"
+        filters={categories}
+        onChange={setSelectedCategories}
+        isSelected={(category) => selectedCategories.includes(category)}
+        allSelected={!selectedCategories.length}
+      />
+      <FilterList
+        label="Risk Appetite"
+        filters={riskProfiles}
+        onChange={setSelectedRiskProfiles}
+        isSelected={(riskProfile) => selectedRiskProfiles.includes(riskProfile)}
+        allSelected={!selectedRiskProfiles.length}
+      />
+      <FundList
+        funds={funds.filter((fund) => {
           const categoryMatch =
             !selectedCategories.length ||
             selectedCategories.includes(fund.category);
@@ -116,34 +125,15 @@ export default function Page() {
             selectedRiskProfiles.includes(fund.riskProfile);
 
           return categoryMatch && riskProfileMatch;
-        })
-        .map((fund) => {
-          return (
-            <div key={fund.id}>
-              <h3>{fund.name}</h3>
-
-              <button
-                onClick={() => {
-                  setSelectedFunds((selectedFunds) => {
-                    // add logic to prevent selecting too many etc.
-                    return [...selectedFunds, fund];
-                  });
-                }}
-              >
-                Learn more
-              </button>
-              <p>
-                Projected return:
-                {calculateProjectedReturns(
-                  lumpSum,
-                  fund.projectedReturn.likely,
-                  fund.charges
-                )}
-              </p>
-              <input type="checkbox"></input>
-            </div>
-          );
         })}
+        lumpSum={lumpSum}
+        onSelectFund={(fund) => handleSelectFund(fund)}
+        isSelected={(fund) =>
+          Boolean(
+            selectedFunds.find((selectedFund) => selectedFund.id === fund.id)
+          )
+        }
+      />
 
       {/* DRAWER */}
       {enoughFundsSelected && <button>Next</button>}
@@ -165,8 +155,20 @@ export default function Page() {
         })}
       </section>
       {/* go red when negative */}
-      <div>Remaining ISA allowance (i) £{remainingAllowance}</div>
-      <div>Total deposit £{totalDeposit}</div>
+      <div>
+        Remaining ISA allowance (i) £
+        {remainingAllowance.toLocaleString("en-GB", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}
+      </div>
+      <div>
+        Total deposit £
+        {totalDeposit.toLocaleString("en-GB", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}
+      </div>
       {/* show if valid = remainingAllowance >=0 && totalDeposit > 100 */}
       <button>Go to payment &gt;</button>
     </div>
