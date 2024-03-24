@@ -28,10 +28,13 @@ const FundRow: FC<FundRowProps> = ({
       <button className="w-4" onClick={() => onRemoveSelectedFund(fund.id)}>
         <img className="w-4 max-w-none" src="/delete.png" />
       </button>
-      <h4 className="w-60">{fund.name}</h4>
+      <h4 className="w-60" data-testid="fund-row">
+        {fund.name}
+      </h4>
       <div className="flex-1">
         <CurrencyInput
           value={fund?.total || ""}
+          testId="fund-row-deposit-input"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             onFundTotalChange(fund.id, e.target.value)
           }

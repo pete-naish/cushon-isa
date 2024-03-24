@@ -34,7 +34,10 @@ const FundCard: FC<FundCardProps> = ({
     >
       <header className="flex justify-between items-center">
         <h3 className="font-bold">{fund.name}</h3>
-        <label className="flex items-center gap-x-2 text-gray-400 text-xs">
+        <label
+          className="flex items-center gap-x-2 text-gray-400 text-xs"
+          data-testid={`select-checkbox-${fund.id}`}
+        >
           <span>Select</span>
           <input
             className="scale-125"

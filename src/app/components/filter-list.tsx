@@ -39,6 +39,7 @@ function FilterList<T>({
         return (
           <button
             key={filter?.toString()}
+            data-testid={`filter-${filter?.toString()}`}
             className={clsx("whitespace-nowrap", {
               "text-gray-600": !isSelected(filter),
               [activeClasses]: isSelected(filter),
