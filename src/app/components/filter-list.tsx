@@ -1,4 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
+import clsx from "clsx";
 
 import { toggleItem } from "../utils";
 
@@ -10,6 +11,8 @@ interface FilterListProps<T> {
   allSelected: boolean;
 }
 
+const activeClasses = "underline text-primary";
+
 function FilterList<T>({
   label,
   filters,
@@ -18,10 +21,12 @@ function FilterList<T>({
   allSelected,
 }: FilterListProps<T>) {
   return (
-    <div>
-      <label>{label}:</label>
+    <div className="flex flex-row flex-wrap align-start gap-x-2 my-1">
+      <span className="text-gray-400 font-semibold whitespace-nowrap">
+        {label}:
+      </span>
       <button
-        className={allSelected ? "text-primary" : ""}
+        className={clsx({ [activeClasses]: allSelected })}
         onClick={() => onChange([])}
       >
         All
@@ -31,7 +36,9 @@ function FilterList<T>({
         return (
           <button
             key={filter?.toString()}
-            className={isSelected(filter) ? "text-primary" : ""}
+            className={clsx("whitespace-nowrap", {
+              [activeClasses]: isSelected(filter),
+            })}
             onClick={() => onChange(toggleFilter)}
           >
             {filter?.toString()}

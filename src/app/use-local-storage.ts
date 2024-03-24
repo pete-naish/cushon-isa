@@ -5,7 +5,6 @@ export function useLocalStorage<T>(
   initialValue: T
 ): [T, (value: T | ((val: T) => T)) => void] {
   const [storedValue, setStoredValue] = useState<T>(() => {
-    //@ts-ignore
     const item = window.localStorage.getItem(key);
     if (item !== undefined && item !== null) {
       try {
@@ -18,12 +17,8 @@ export function useLocalStorage<T>(
   });
 
   const setValue = (value: T | ((val: T) => T)) => {
-    // Allow value to be a function so we have the same API as useState
     const valueToStore = value instanceof Function ? value(storedValue) : value;
-    // Save state
     setStoredValue(valueToStore);
-    // Save to local storage
-    //@ts-ignore
     window.localStorage.setItem(
       key,
       typeof valueToStore === "string"

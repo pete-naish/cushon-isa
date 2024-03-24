@@ -1,7 +1,7 @@
 export const stringToNumber = (str?: string) => {
   if (!str) return 0;
 
-  const num = parseFloat(str);
+  const num = parseFloat(str.replace(",", "").replace("£", ""));
 
   if (isNaN(num)) return 0;
 
@@ -19,8 +19,9 @@ export const calculateProjectedReturns = (
   const amountAfterReturn = initialInvestmentNumber * (1 + returnRateDecimal);
   const chargesAmount = amountAfterReturn * chargesRateDecimal;
   const finalAmount = amountAfterReturn - chargesAmount;
+  const finalAmountDecimal = Math.round(finalAmount * 100) / 100;
 
-  return Math.round(finalAmount);
+  return finalAmountDecimal;
 };
 
 export function toggleItem<T>(item: T) {
@@ -30,3 +31,16 @@ export function toggleItem<T>(item: T) {
       : [...items, item];
   };
 }
+
+export const formatNumberAsCurrency = (
+  value: number,
+  locale = "en-GB",
+  currency = "GBP"
+) =>
+  value.toLocaleString(locale, {
+    style: "currency",
+    currency,
+  });
+
+export const isValidNumber = (value: string) =>
+  !(value && isNaN(parseFloat(value)));

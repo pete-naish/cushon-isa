@@ -8,6 +8,7 @@ interface FundListProps {
   lumpSum: string;
   isSelected: (fund: Fund) => boolean;
   onSelectFund: (fund: Fund) => void;
+  onClearFilters: () => void;
 }
 
 const FundList: FC<FundListProps> = ({
@@ -15,7 +16,18 @@ const FundList: FC<FundListProps> = ({
   lumpSum,
   isSelected,
   onSelectFund,
+  onClearFilters,
 }) => {
+  if (!funds.length) {
+    // TODO
+    return (
+      <>
+        <p>No funds match your selected filters</p>
+        <button onClick={onClearFilters}>Clear filters</button>
+      </>
+    );
+  }
+
   return funds.map((fund) => {
     return (
       <FundCard
