@@ -63,8 +63,8 @@ export const funds: Fund[] = [
   },
   {
     id: "33e814c9-1198-4c0d-910b-05fef87aecf0",
-    name: "Cushon Ethical Fund",
-    category: "Ethical",
+    name: "Cushon CushonMix Fund",
+    category: "CushonMix",
     riskProfile: "Very low",
     projectedReturn: {
       good: 4.01,
