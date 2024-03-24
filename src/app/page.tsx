@@ -94,6 +94,17 @@ export default function Page() {
     return categoryMatch && riskProfileMatch;
   });
 
+  const submitDisabled =
+    remainingAllowance < 0 ||
+    totalDeposit < 100 ||
+    !selectedFunds.every(
+      (fund) =>
+        fund.total &&
+        isValidNumber(fund.total) &&
+        stringToNumber(fund.total) >= MIN_LUMP_SUM &&
+        stringToNumber(fund.total) <= ANNUAL_ISA_LIMIT
+    );
+
   return (
     <>
       <header className="container mx-auto p-4">
@@ -149,7 +160,7 @@ export default function Page() {
             }}
           />
         </section>
-        <section className="container mx-auto px-4 pb-4">
+        <section className="container mx-auto px-4 py-4">
           <CurrencyInput
             label={`Lump sum (mininum ${formatNumberAsCurrency(MIN_LUMP_SUM)})`}
             value={lumpSum}
@@ -166,7 +177,17 @@ export default function Page() {
       </div>
       {enoughFundsSelected && (
         <>
-          <section className="container mx-auto p-4 ">
+          <section className="container mx-auto p-4 mb-32">
+            <h2 className="text-center text-xl text-primary font-bold mb-2">
+              {`How much would you like to deposit into your fund${
+                selectedFunds.length > 1 ? "s" : ""
+              }?`}
+            </h2>
+            <h3 className="text-center text-sm text-gray-400 mb-4">
+              Your total deposit must be between{" "}
+              {formatNumberAsCurrency(MIN_LUMP_SUM)} and{" "}
+              {formatNumberAsCurrency(ANNUAL_ISA_LIMIT)}
+            </h3>
             {selectedFunds.map((fund) => {
               return (
                 <div key={fund.id}>
@@ -177,23 +198,28 @@ export default function Page() {
                       handleFundTotalChange(fund.id, e.target.value)
                     }
                     isValid={
-                      isValidNumber(fund?.total || "") &&
-                      stringToNumber(fund?.total) <= ANNUAL_ISA_LIMIT &&
-                      totalDeposit <= ANNUAL_ISA_LIMIT
+                      !fund?.total ||
+                      (isValidNumber(fund.total) &&
+                        stringToNumber(fund.total) >= MIN_LUMP_SUM &&
+                        stringToNumber(fund.total) <= ANNUAL_ISA_LIMIT &&
+                        totalDeposit <= ANNUAL_ISA_LIMIT)
                     }
-                    errorMessage={`Deposit amount must be a number between ${formatNumberAsCurrency(
+                    errorMessage={`Total deposit amount must be a number between ${formatNumberAsCurrency(
                       MIN_LUMP_SUM
                     )} and ${formatNumberAsCurrency(ANNUAL_ISA_LIMIT)}`}
                   />
+                  {/* remove fund button */}
                 </div>
               );
             })}
           </section>
-          <section className="sticky bottom-0 w-full bg-slate-100">
+          <section className="fixed bottom-0 w-full bg-slate-100">
             <div className="container mx-auto flex justify-between gap-x-4">
-              <div className="flex gap-x-4 px-4">
+              <div className="flex gap-x-4 px-4 py-1">
                 <div className="flex flex-col">
-                  Remaining ISA allowance (i)
+                  <span className="text-gray-600 text-sm">
+                    Remaining ISA allowance (i)
+                  </span>
                   <span
                     className={clsx({ "text-red-600": remainingAllowance < 0 })}
                   >
@@ -201,7 +227,10 @@ export default function Page() {
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  Total deposit
+                  <span className="text-gray-600 text-sm">
+                    Total deposit ({selectedFunds.length} fund
+                    {selectedFunds.length > 1 ? "s" : ""})
+                  </span>
                   <span
                     className={clsx({ "text-red-600": remainingAllowance < 0 })}
                   >
@@ -209,8 +238,14 @@ export default function Page() {
                   </span>
                 </div>
               </div>
-              {/* show if valid = remainingAllowance >=0 && totalDeposit > 100 */}
-              <button className="text-white bg-primary p-4">
+              <button
+                disabled={submitDisabled}
+                className={clsx("text-white p-4 transition", {
+                  "bg-gray-400": submitDisabled,
+                  "bg-primary": !submitDisabled,
+                })}
+                onClick={() => alert("All done for now!")}
+              >
                 Go to payment &#x2794;
               </button>
             </div>

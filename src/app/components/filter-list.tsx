@@ -26,7 +26,10 @@ function FilterList<T>({
         {label}:
       </span>
       <button
-        className={clsx({ [activeClasses]: allSelected })}
+        className={clsx({
+          "text-gray-600": !allSelected,
+          [activeClasses]: allSelected,
+        })}
         onClick={() => onChange([])}
       >
         All
@@ -37,6 +40,7 @@ function FilterList<T>({
           <button
             key={filter?.toString()}
             className={clsx("whitespace-nowrap", {
+              "text-gray-600": !isSelected(filter),
               [activeClasses]: isSelected(filter),
             })}
             onClick={() => onChange(toggleFilter)}

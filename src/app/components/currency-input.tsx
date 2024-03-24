@@ -20,7 +20,9 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
 }) => {
   return (
     <>
-      {label && <label>{label}</label>}
+      {label && (
+        <label className="block text-gray-600 text-sm mb-1">{label}</label>
+      )}
       <div className="flex items-stretch">
         <span className="bg-gray-400 text-white px-2">£</span>
         <input
