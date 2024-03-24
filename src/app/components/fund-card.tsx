@@ -32,31 +32,39 @@ const FundCard: FC<FundCardProps> = ({
         }
       )}
     >
-      <header className="flex justify-between items-start">
+      <header className="flex justify-between items-center">
         <h3 className="font-bold">{fund.name}</h3>
-        <input
-          className="m-1 scale-125"
-          type="checkbox"
-          checked={selected}
-          onChange={onSelectFund}
-        />
+        <label className="flex items-center gap-x-2 text-gray-400 text-xs">
+          <span>Select</span>
+          <input
+            className="scale-125"
+            type="checkbox"
+            checked={selected}
+            onChange={onSelectFund}
+          />
+        </label>
       </header>
       <RiskProfileBadge riskProfile={fund.riskProfile} />
-      {stringToNumber(lumpSum) >= MIN_LUMP_SUM ? (
-        <p>
-          Projected return:
-          {formatNumberAsCurrency(
-            calculateProjectedReturns(
-              lumpSum,
-              fund.projectedReturn.likely,
-              fund.charges
-            )
-          )}
-        </p>
-      ) : (
-        <p>What to put here?</p>
-      )}
-      <button>Learn more</button>
+      <div className="flex flex-col my-5">
+        <span className="text-gray-600 text-sm mr-1">Projected return</span>
+
+        {stringToNumber(lumpSum) >= MIN_LUMP_SUM ? (
+          <span>
+            {formatNumberAsCurrency(
+              calculateProjectedReturns(
+                lumpSum,
+                fund.projectedReturn.likely,
+                fund.charges
+              )
+            )}
+          </span>
+        ) : (
+          <span className="italic">Unknown - update Lump sum below</span>
+        )}
+      </div>
+      <a href="#" className="underline text-sm">
+        Learn more
+      </a>
     </div>
   );
 };

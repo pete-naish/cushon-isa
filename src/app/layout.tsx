@@ -1,3 +1,4 @@
+import { BRAND_LOGO } from "./config";
 import "./globals.css";
 
 export default function RootLayout({
@@ -17,8 +18,14 @@ export default function RootLayout({
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-
-      <body>{children}</body>
+      <body>
+        <header className="border-b-8 border-solid border-primary/25">
+          <div className="container mx-auto p-4">
+            <img className="w-32" src={BRAND_LOGO} />
+          </div>
+        </header>
+        {children}
+      </body>
     </html>
   );
 }

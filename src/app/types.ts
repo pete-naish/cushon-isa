@@ -36,4 +36,5 @@ export type Fund = {
 
 export type SelectedFund = Fund & {
   total?: string;
+  isValid?: boolean;
 };

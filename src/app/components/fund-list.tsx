@@ -19,11 +19,12 @@ const FundList: FC<FundListProps> = ({
   onClearFilters,
 }) => {
   if (!funds.length) {
-    // TODO
     return (
       <>
-        <p>No funds match your selected filters</p>
-        <button onClick={onClearFilters}>Clear filters</button>
+        <p>No funds match your selected filters.</p>
+        <button className="underline" onClick={onClearFilters}>
+          Clear filters
+        </button>
       </>
     );
   }
