@@ -1,5 +1,6 @@
 {
   "name": "cushon-isa",
+  "author": "Pete Naish",
   "module": "index.ts",
   "type": "module",
   "scripts": {
