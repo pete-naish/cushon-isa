@@ -46,6 +46,7 @@ const FundCard: FC<FundCardProps> = ({
       </header>
       <RiskProfileBadge riskProfile={fund.riskProfile} />
       <div className="flex flex-col my-5">
+        <p className="mb-6">{fund.description}</p>
         <span className="text-gray-600 text-sm mr-1">Projected return</span>
 
         {stringToNumber(lumpSum) >= MIN_LUMP_SUM ? (

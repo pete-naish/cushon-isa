@@ -1,11 +1,9 @@
 "use client";
 
 import React, { useState, type ChangeEvent, useMemo, useCallback } from "react";
-import clsx from "clsx";
 
 import {
   ANNUAL_ISA_LIMIT,
-  FORMATTED_ANNUAL_ISA_LIMIT,
   FORMATTED_MIN_LUMP_SUM,
   MAX_SELECTED_FUNDS,
   MIN_LUMP_SUM,
@@ -26,6 +24,7 @@ import FilterList from "./components/filter-list";
 import FundList from "./components/fund-list";
 import CurrencyInput from "./components/currency-input";
 import TotalDepositBanner from "./components/total-deposit-banner";
+import DepositForm from "./components/deposit-form";
 
 export default function Page() {
   const [lumpSum, setLumpSum] = useState("");
@@ -172,57 +171,15 @@ export default function Page() {
       </div>
       {enoughFundsSelected && (
         <>
-          <section className="container mx-auto px-4 pt-16 pb-32">
-            <h2 className="text-xl text-primary font-bold mb-2">
-              How much would you like to deposit?
-            </h2>
-            <h3 className="text-sm text-gray-600 mb-4">
-              Your total deposit must be between {FORMATTED_MIN_LUMP_SUM} and{" "}
-              {FORMATTED_ANNUAL_ISA_LIMIT}
-            </h3>
-            <div className="flex flex-col">
-              {selectedFunds.map((fund, i) => {
-                return (
-                  <div
-                    key={fund.id}
-                    className={clsx(
-                      "flex items-center justify-between gap-x-4 px-4 py-2",
-                      {
-                        "bg-slate-100": i % 2 !== 0,
-                      }
-                    )}
-                  >
-                    <button
-                      className="w-4"
-                      onClick={() =>
-                        setSelectedFunds((selectedFunds) =>
-                          selectedFunds.filter(
-                            (selectedFund) => selectedFund.id !== fund.id
-                          )
-                        )
-                      }
-                    >
-                      <img className="w-4 max-w-none" src="/delete.png" />
-                    </button>
-                    <h4 className="w-60">{fund.name}</h4>
-                    <div className="flex-1">
-                      <CurrencyInput
-                        value={fund?.total || ""}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                          handleFundTotalChange(fund.id, e.target.value)
-                        }
-                        isValid={Boolean(!fund?.total || fund.isValid)}
-                        errorMessage={`Total deposit must be between ${FORMATTED_MIN_LUMP_SUM} and ${FORMATTED_ANNUAL_ISA_LIMIT}`}
-                      />
-                    </div>
-                    <a href="#" className="flex justify-end underline">
-                      Download {fund.name} KIID
-                    </a>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
+          <DepositForm
+            selectedFunds={selectedFunds}
+            onFundTotalChange={handleFundTotalChange}
+            onRemoveSelectedFund={(id: string) =>
+              setSelectedFunds((selectedFunds) =>
+                selectedFunds.filter((selectedFund) => selectedFund.id !== id)
+              )
+            }
+          />
           <TotalDepositBanner
             remainingAllowance={remainingAllowance}
             totalDeposit={totalDeposit}

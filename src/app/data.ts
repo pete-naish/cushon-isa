@@ -8,11 +8,12 @@ export const funds: Fund[] = [
     riskProfile: "Very high",
     projectedReturn: {
       good: 21.76,
-      likely: 6.12,
-      bad: -9.52,
+      likely: 10.2,
+      bad: -15.52,
     },
-    charges: 0.91,
-    description: "Hello",
+    charges: 1.91,
+    description:
+      "This CushonMix portfolio spreads your money across a wild range of top-rated funds from our comparison tables.",
     provider: "Cushon",
   },
   {
@@ -21,12 +22,13 @@ export const funds: Fund[] = [
     category: "Equities",
     riskProfile: "High",
     projectedReturn: {
-      good: 21.76,
-      likely: 6.12,
-      bad: -9.52,
+      good: 18.26,
+      likely: 8.12,
+      bad: -1.32,
     },
     charges: 0.91,
-    description: "Hello",
+    description:
+      "This CushonMix portfolio spreads your money across a specially selected range of top-rated funds from our comparison tables.",
     provider: "Cushon",
   },
   {
@@ -35,12 +37,13 @@ export const funds: Fund[] = [
     category: "Bonds",
     riskProfile: "Medium",
     projectedReturn: {
-      good: 21.76,
-      likely: 6.12,
-      bad: -9.52,
+      good: 7.18,
+      likely: 4.42,
+      bad: -2.89,
     },
-    charges: 0.91,
-    description: "Hello",
+    charges: 1.01,
+    description:
+      "This CushonMix portfolio spreads your money across a specially selected range of top-rated funds from our comparison tables.",
     provider: "Cushon",
   },
   {
@@ -49,12 +52,13 @@ export const funds: Fund[] = [
     category: "Ethical",
     riskProfile: "Low",
     projectedReturn: {
-      good: 21.76, // @TODO change these values
-      likely: 6.12,
-      bad: -9.52,
+      good: 6.76,
+      likely: 5.2,
+      bad: -1.01,
     },
-    charges: 0.91,
-    description: "Hello",
+    charges: 0.45,
+    description:
+      "This CushonMix portfolio spreads your money across a specially selected range of top-rated funds from our comparison tables.",
     provider: "Cushon",
   },
   {
@@ -63,12 +67,13 @@ export const funds: Fund[] = [
     category: "Ethical",
     riskProfile: "Very low",
     projectedReturn: {
-      good: 21.76, // @TODO change these values
-      likely: 6.12,
-      bad: -9.52,
+      good: 4.01,
+      likely: 2.02,
+      bad: 1.5,
     },
-    charges: 0.91,
-    description: "Hello",
+    charges: 0.22,
+    description:
+      "This CushonMix portfolio spreads your money across a specially selected range of top-rated funds from our comparison tables.",
     provider: "Cushon",
   },
 ];
