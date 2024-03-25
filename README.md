@@ -1,6 +1,33 @@
 # cushon-isa
 
-To install dependencies:
+## Windows users:
+
+### To install dependencies:
+
+```bash
+npm install
+
+nvm use 18
+```
+
+### To run:
+
+```bash
+npm run dev
+```
+
+### To test:
+
+```bash
+npm run dev
+
+#in a new tab
+npm playwright test --ui
+```
+
+## Mac / Linux users:
+
+### To install dependencies:
 
 ```bash
 # install bun
@@ -8,16 +35,17 @@ curl -fsSL https://bun.sh/install | bash
 
 # install project dependencies
 bun install
+
+nvm use 18
 ```
 
-To run:
+### To run:
 
 ```bash
-nvm use 18
 bun dev
 ```
 
-To test:
+### To test:
 
 ```bash
 bun dev
