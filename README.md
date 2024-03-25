@@ -3,6 +3,10 @@
 To install dependencies:
 
 ```bash
+# install bun
+curl -fsSL https://bun.sh/install | bash
+
+# install project dependencies
 bun install
 ```
 
