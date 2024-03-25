@@ -40,6 +40,7 @@ const TotalDepositBanner: FC<TotalDepositBannerProps> = ({
         </div>
         <button
           disabled={submitDisabled}
+          data-testid="deposit-banner-submit-button"
           className={clsx("text-white p-4 transition", {
             "bg-gray-400": submitDisabled,
             "bg-primary hover:bg-primary/75": !submitDisabled,

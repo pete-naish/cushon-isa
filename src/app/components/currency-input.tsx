@@ -8,6 +8,7 @@ interface CurrencyInputProps {
   label?: string;
   errorMessage?: string;
   helperMessage?: string;
+  testId?: string;
 }
 
 const CurrencyInput: FC<CurrencyInputProps> = ({
@@ -17,6 +18,7 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
   label,
   errorMessage,
   helperMessage,
+  testId,
 }) => {
   return (
     <>
@@ -27,6 +29,7 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
         <span className="bg-gray-400 text-white px-2">£</span>
         <input
           type="text"
+          data-testId={testId}
           className={clsx("border-solid border px-1", {
             "border-red-600": !isValid,
           })}

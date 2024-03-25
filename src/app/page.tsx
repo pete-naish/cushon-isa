@@ -118,7 +118,10 @@ export default function Page() {
               ? "Select your fund"
               : `Select up to ${MAX_SELECTED_FUNDS} funds`}
           </h2>
-          <h3 className="text-sm text-gray-600 mb-4">
+          <h3
+            className="text-sm text-gray-600 mb-4"
+            data-testid="filter-result-count"
+          >
             Showing {fundsMatchingFilters.length} of {funds.length}
           </h3>
           <FilterList
