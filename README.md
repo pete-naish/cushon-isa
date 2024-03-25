@@ -9,15 +9,17 @@ bun install
 To run:
 
 ```bash
+nvm use 18
 bun dev
 ```
-
-Change `MAX_SELECTED_FUNDS` in `src/app/config.ts` to see how multiple fund selection works.
 
 To test:
 
 ```bash
-git checkout testing
-npx playwright install
-npm playwright test
+bun dev
+
+# in a new tab
+bun playwright test --ui
 ```
+
+Change `MAX_SELECTED_FUNDS` in `src/app/config.ts` to see how multiple fund selection works.
